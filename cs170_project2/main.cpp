@@ -18,16 +18,20 @@
 
 problem* extractData(){
     
+    
     //Greeting and Open File
     ifstream myfile;
+    string filename;
+
+    
+    /*
     cout << "Hello Professor, please enter the name of the data txt file you which to read in: " << endl;
     
-    string filename;
     cin >> filename;
     cout << endl;
+    */
     
-    
-    myfile.open(filename);
+    myfile.open("data.txt");
     
     while(!myfile.is_open()){
         cout << "File not found, please try again: ";
@@ -50,16 +54,20 @@ problem* extractData(){
         //line is the given line of data in the file
     float mimic;
     string line;
+    int id_inc = 1;
     
     
     //Intuition
-        //Until the file is scanned
+        //Until the file is done being scanned
             //get a line from the file
             //create a new entry, put the first thing from the line as the classifier for the data stub
             //then follow a loop using the features.size as a barrier, inputting data
     while(!myfile.eof()){
-        getline(myfile, line);
+        
         stub* entry = new struct stub;
+        
+        entry->id = id_inc;
+        ++id_inc;
         
         myfile >> entry->classifier;
         
@@ -70,7 +78,13 @@ problem* extractData(){
         
         toGive -> file_data.push_back(entry);
         
+        getline(myfile, line);
+        
     }
+    
+    //over read by one entry, sloppy but effective fix
+    toGive -> file_data.pop_back();
+    toGive -> total_entries = toGive -> file_data.size();
     
     myfile.close();
     
@@ -84,8 +98,8 @@ int main(int argc, const char * argv[]) {
     
     //not fully reading in data properly
     problem* initial = extractData();
-    initial -> print_first_data();
-    initial -> print_final_data();
-    
+    initial -> print_all_data();
+    initial -> build_tree();
+
     return 0;
 }

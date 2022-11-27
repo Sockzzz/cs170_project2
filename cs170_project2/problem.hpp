@@ -19,12 +19,13 @@ using namespace std;
 //struct for storing a single data entry
 struct stub{
     
+    int id;
     float classifier;
     vector<float> features;
     
 };
 
-//class for cleaner managment of given data and searches
+//class for easier managment of given data and searches
 class problem{
     
 public:
@@ -32,16 +33,20 @@ public:
     int features;
     string file_name;
     vector<stub*> file_data;
+    unsigned long total_entries;
     
     
     problem();
     problem(int features, string file);
+    
+    void build_tree();
     
     //for debugging to make sure the data was stored properly
     void print_all_data();
     void print_first_data();
     void print_final_data();
     
+    bool is_in(vector<int> cf, int i);
     
 };
 
