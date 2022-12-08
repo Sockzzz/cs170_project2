@@ -41,9 +41,12 @@ public:
     problem();
     problem(int features, string file);
     
-    void build_tree();
+    void build_tree(); //forward selection
+    void build_tree2(); //backward elimination
+    //i got lazy with the renaming, might make more robust later
     
     vector<float> purgeData(vector<float> x, vector<int> features);
+    vector<int> purgeFeatures(vector<int> list, vector<int> remove);
     
     float giveScore(vector<int> features);
     float give_distance(vector<float> x, vector<float> y);

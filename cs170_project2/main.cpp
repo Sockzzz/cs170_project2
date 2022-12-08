@@ -99,7 +99,24 @@ int main(int argc, const char * argv[]) {
     //not fully reading in data properly
     problem* initial = extractData();
     initial -> print_all_data();
-    initial -> build_tree();
+    
+    int choice = 0;
 
+    
+    while(choice != 3){
+        cout << "Select option: " << endl << "(1) Forward Selection" << endl << "(2) Backward Elimination"
+        <<endl << "(3) Quit" << endl;
+        
+        cin >> choice;
+        
+        if(choice == 1)
+            initial -> build_tree();
+        else if(choice == 2)
+            initial -> build_tree2();
+            
+    }
+    
+    cout << endl << endl << "Goodbye!";
+    
     return 0;
 }

@@ -213,6 +213,120 @@ void problem::build_tree(){
 }
 
 
+vector<int> problem::purgeFeatures(vector<int> list, vector<int> remove){
+    
+    vector<int> edit;
+    
+    
+    bool exists;
+    
+    //iterates through the list of all features
+    for(int i = 0; i < list.size(); ++i){
+        
+        //curr feature number {will always just be i + 1}
+        int listF = i + 1;
+        exists = false;
+        //iterates through list of currently removed features
+        for(int j = 0; j < remove.size(); ++j){
+            
+            
+            int currF = remove.at(j);
+            if(listF == currF)
+                exists = true;
+            
+        }
+        //if remove does not hold that as one of the elements then we can use it
+        if(!exists)
+            edit.push_back(listF-1);
+    }
+    
+    
+    return edit;
+}
+
+
+//B.E.
+void problem::build_tree2(){
+    
+    vector<int> best_set;
+    float high_score = 0.0;
+    
+    vector<int> current_features; //holds current considered features
+    
+    
+    
+    float score = 0.0;
+    int toRemove;
+    
+    
+    //busy looking line but basically the conversion equates to the total number of features
+        //file_data is the vector containing all data lines from the file
+            //.at(0) represents the first entry
+                //-> features is the vector that holds all the features for the given data entry
+                    //size() gives us the number of features for that entry (all entries)
+    unsigned long runs = file_data.at(0)->features.size();
+    
+    //for backward elim we start with all of them
+    for(int i = 0; i < runs; ++i){
+        current_features.push_back(i+1);
+    }
+    
+    //features that we have removed from the set
+    vector<int> removed;
+    
+    
+    for(int i = 0; i < runs; ++i){
+        
+        cout << "On the " << i+1 << "th level of the search tree:" << endl;
+        score = 0.0;
+        toRemove = -1;
+        
+        
+        for(int j = 0; j < runs; ++j){
+            
+            //helper function so i can have a cleaner line here
+            if(is_in(removed, j+1))
+                continue;
+            
+            cout << "- Considering removing the " << j+1 << " feature" << endl;
+            
+    
+            vector<int> candidate = removed;
+            candidate.push_back(j+1);
+             
+            
+            vector<int> potential = purgeFeatures(current_features, candidate);
+            
+            
+            float temp_score = giveScore(potential);
+           
+            
+            if(temp_score > score){
+                toRemove = j+1;
+                score = temp_score;
+            }
+            
+        }
+        
+        cout<< "On level " << i+1 << " the " << toRemove << " feature was removed from the set with score: " << score << endl << endl;
+        removed.push_back(toRemove);
+        
+        if(score > high_score){
+            best_set = purgeFeatures(current_features, removed);
+            high_score = score;
+        }
+        
+    }
+    
+    cout << "The best set of features were :" << endl;
+    for(int i = 0; i < best_set.size(); ++i){
+        cout << best_set.at(i) << endl;
+    }
+    cout << "The highest accuracy was: " << high_score << endl;
+    
+}
+
+
 //debug checker
 void problem::print_all_data(){
     
